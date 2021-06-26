@@ -6,14 +6,16 @@ import com.ecommerce.product.dto.query.BaseQueryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-public interface BaseService<Q extends BaseQueryDTO, F extends BaseFormDTO> {
-    F create(F f);
+import java.util.concurrent.CompletableFuture;
 
-    F update(F f);
+public interface BaseService<Q extends BaseQueryDTO, F extends BaseFormDTO> {
+    CompletableFuture<F> create(F f);
+
+    CompletableFuture<F> update(F f);
 
     void delete(Integer id);
 
     Page<Q> getAll(PageRequest pr);
 
-    Q getOne(Integer id);
+    CompletableFuture<Q> getOne(Integer id);
 }

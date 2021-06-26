@@ -1,5 +1,6 @@
 package com.ecommerce.product.dto.form;
 
+import com.ecommerce.product.dto.query.CategoryQueryDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,10 @@ public class ProductFormDTO extends BaseFormDTO {
     private String thumbnail;
     private Double price;
     private int quantity;
+    private CategoryQueryDTO category;
+
+    public boolean isValid() {
+        // placeholder for checking fields later
+        return id != null && price != null && quantity > 0;
+    }
 }

@@ -9,34 +9,37 @@ CREATE TABLE product
     created_date timestamp default now(),
     updated_date timestamp default now()
 );
+alter table product add column version int default 0;
 
 CREATE TABLE img (
-    id int auto_increment primary key,
-    link varchar(500),
-    created_date timestamp default now(),
-    updated_date timestamp default now()
+                     id int auto_increment primary key,
+                     link varchar(500),
+                     created_date timestamp default now(),
+                     updated_date timestamp default now()
 );
 Alter table img add column name varchar(100);
+alter table img add column version int default 0;
 
 CREATE TABLE category (
-    id int auto_increment primary key ,
-    name varchar(100),
-    parent_id int,
-    created_date timestamp default now(),
-    updated_date timestamp default now(),
-    FOREIGN KEY (parent_id) REFERENCES category(id)
+                          id int auto_increment primary key ,
+                          name varchar(100),
+                          parent_id int,
+                          created_date timestamp default now(),
+                          updated_date timestamp default now(),
+                          FOREIGN KEY (parent_id) REFERENCES category(id)
 );
+alter table category add column version int default 0;
 
 CREATE TABLE product_img (
-    product_id int,
-    img_id int,
-    primary key (product_id, img_id)
+                             product_id int,
+                             img_id int,
+                             primary key (product_id, img_id)
 );
 
 CREATE TABLE product_category (
-    category_id int,
-    product_id int,
-    primary key (category_id, product_id)
+                                  category_id int,
+                                  product_id int,
+                                  primary key (category_id, product_id)
 );
 
 INSERT INTO category(name) VALUE ('CAR');

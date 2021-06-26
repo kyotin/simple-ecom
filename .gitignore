@@ -6,3 +6,4 @@
 *.iml
 out
 gen
+/ecom-server/product/src/main/resources/application.yml.mine

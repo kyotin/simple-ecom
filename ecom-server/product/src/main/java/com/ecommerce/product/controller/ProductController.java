@@ -5,6 +5,8 @@ import com.ecommerce.product.dto.ResponseDTO;
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;
 import com.ecommerce.product.service.product.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,32 +22,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequestMapping(APIMappingConstant.PRODUCT)
 public class ProductController {
 
-    @Autowired
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+
     private ProductService productService;
 
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+
     @PostMapping
-    public ResponseEntity<ResponseDTO<ProductFormDTO>> create(@RequestBody ProductFormDTO formDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO<>(HttpStatus.CREATED.getReasonPhrase(), "Success",
-                        productService.create(formDTO)));
+    public CompletableFuture<ResponseEntity<ProductFormDTO>> create(@RequestBody ProductFormDTO formDTO) {
+        return productService.create(formDTO)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDTO<ProductFormDTO>> update(@RequestBody ProductFormDTO formDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO<>(HttpStatus.CREATED.getReasonPhrase(), "Success",
-                        productService.update(formDTO)));
+    public CompletableFuture<ResponseEntity<ProductFormDTO>> update(@RequestBody ProductFormDTO formDTO) {
+        return productService.update(formDTO)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @DeleteMapping
     public ResponseEntity<ResponseDTO<Void>> delete(Integer id) {
         productService.delete(id);
-        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(),
-                "Success"));
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success"));
     }
 
     @GetMapping
@@ -55,8 +64,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<ProductQueryDTO>> getOne(@PathVariable Integer id) {
-        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(),
-                "Success", productService.getOne(id)));
+    public CompletableFuture<ResponseEntity<ProductQueryDTO>> getOne(@PathVariable Integer id) {
+        return productService.getOne(id)
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 }

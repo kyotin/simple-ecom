@@ -1,6 +1,5 @@
 package com.ecommerce.product.dto.query;
 
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,4 +15,5 @@ public class ProductQueryDTO extends BaseQueryDTO {
     private String thumbnail;
     private Double price;
     private int quantity;
+    private CategoryQueryDTO category;
 }

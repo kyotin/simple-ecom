@@ -3,15 +3,13 @@ package com.ecommerce.product.entity;
 import com.ecommerce.product.constants.EntityConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -37,4 +35,12 @@ public class Product extends BaseEntity {
 
     @Column(name = "quantity")
     private int quantity;
+
+    @ManyToOne
+    @JoinTable(
+            name="product_category",
+            joinColumns = @JoinColumn( name="product_id"),
+            inverseJoinColumns = @JoinColumn( name="category_id")
+    )
+    private Category category;
 }
