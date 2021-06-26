@@ -1,6 +1,7 @@
 package com.ecommerce.product.controller;
 
 import com.ecommerce.product.constants.APIMappingConstant;
+import com.ecommerce.product.dto.ResponseDTO;
 import com.ecommerce.product.dto.query.CategoryQueryDTO;
 import com.ecommerce.product.service.category.CategoryService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.concurrent.CompletableFuture;
@@ -27,9 +29,16 @@ public class CategoryController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<Iterable<CategoryQueryDTO>>> getAll() {
+    public CompletableFuture<ResponseEntity<ResponseDTO<Iterable<CategoryQueryDTO>>>> getAll() {
         return categoryService.getAllCategories()
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
+    }
+
+    @GetMapping("/{id}")
+    public CompletableFuture<ResponseEntity<ResponseDTO<CategoryQueryDTO>>> getCategory(@PathVariable Integer id) {
+        return categoryService.getCategory(id)
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
     }
 }

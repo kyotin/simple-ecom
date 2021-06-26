@@ -15,7 +15,7 @@ public interface BaseService<Q extends BaseQueryDTO, F extends BaseFormDTO> {
 
     void delete(Integer id);
 
-    Page<Q> getAll(PageRequest pr);
+    CompletableFuture<Page<Q>> getAll(PageRequest pr);
 
     CompletableFuture<Q> getOne(Integer id);
 }

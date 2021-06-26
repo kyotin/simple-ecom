@@ -38,35 +38,42 @@ public class ProductController {
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<ProductFormDTO>> create(@RequestBody ProductFormDTO formDTO) {
+    public CompletableFuture<ResponseEntity<ResponseDTO<ProductFormDTO>>> create(@RequestBody ProductFormDTO formDTO) {
         return productService.create(formDTO)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
     }
 
     @PutMapping
-    public CompletableFuture<ResponseEntity<ProductFormDTO>> update(@RequestBody ProductFormDTO formDTO) {
+    public CompletableFuture<ResponseEntity<ResponseDTO<ProductFormDTO>>> update(@RequestBody ProductFormDTO formDTO) {
         return productService.update(formDTO)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
     }
 
-    @DeleteMapping
-    public ResponseEntity<ResponseDTO<Void>> delete(Integer id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Integer id) {
         productService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success"));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductQueryDTO>> getAll(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(productService.getAll(PageRequest.of(page, pageSize)));
+    public CompletableFuture<ResponseEntity<ResponseDTO<Page<ProductQueryDTO>>>> getAll(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                                                        @RequestParam(value = "categoryId", defaultValue = "0") int categoryId) {
+        CompletableFuture<Page<ProductQueryDTO>> future =
+                categoryId > 0 ? productService.getProductOfCategory(PageRequest.of(page, pageSize), categoryId) : productService.getAll(PageRequest.of(page, pageSize));
+
+        return future
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<ProductQueryDTO>> getOne(@PathVariable Integer id) {
+    public CompletableFuture<ResponseEntity<ResponseDTO<ProductQueryDTO>>> getOne(@PathVariable Integer id) {
         return productService.getOne(id)
-                .thenApply(ResponseEntity::ok)
-                .exceptionally(throwable -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
     }
+
 }

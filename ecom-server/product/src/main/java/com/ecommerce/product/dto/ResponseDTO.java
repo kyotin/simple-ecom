@@ -23,5 +23,6 @@ public class ResponseDTO<T> {
     public ResponseDTO(String code, String message) {
         this.code = code;
         this.message = message;
+        this.timestamp = System.currentTimeMillis();
     }
 }

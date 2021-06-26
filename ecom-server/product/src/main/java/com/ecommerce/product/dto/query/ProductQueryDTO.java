@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class ProductQueryDTO extends BaseQueryDTO {
+    private String id;
     private String name;
     private String description;
     private String thumbnail;

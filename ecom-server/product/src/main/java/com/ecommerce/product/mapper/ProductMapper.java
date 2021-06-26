@@ -11,33 +11,18 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
-    Category map(CategoryQueryDTO dto);
+    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    ProductQueryDTO modelToQueryDto(Product model);
+    Category buildCategory(CategoryQueryDTO dto);
 
-    Product queryDtoToModel(ProductQueryDTO dto);
+    CategoryQueryDTO buildCategoryQuery(Category category);
 
-    ProductFormDTO modelToFormDto(Product model);
+    ProductQueryDTO buildProductQuery(Product model);
 
-    Product formDtoToModel(ProductFormDTO dto);
+    Product buildProduct(ProductQueryDTO dto);
 
-    static ProductMapper getInstance() {
-        return Mappers.getMapper(ProductMapper.class);
-    }
+    ProductFormDTO buildProductForm(Product model);
 
-    static ProductQueryDTO convertToQueryDto(Product model) {
-        return getInstance().modelToQueryDto(model);
-    }
+    Product buildProduct(ProductFormDTO dto);
 
-    static ProductFormDTO convertToFormDto(Product model) {
-        return getInstance().modelToFormDto(model);
-    }
-
-    static Product convertToModel(ProductQueryDTO dto) {
-        return getInstance().queryDtoToModel(dto);
-    }
-
-    static Product convertToModel(ProductFormDTO dto) {
-        return getInstance().formDtoToModel(dto);
-    }
 }
