@@ -6,4 +6,4 @@ metadata:
   {{- include "product.labels" . | nindent 4 }}
 data:
   application.yaml: |
-    {{- toYaml .Values.uaa | nindent 4}}
+    {{- toYaml .Values.product | nindent 4}}
