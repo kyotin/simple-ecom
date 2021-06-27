@@ -1,0 +1,22 @@
+server:
+  port: 9992
+  shutdown: GRACEFUL
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true # debug purpose
+  datasource:
+    url: {DATASOURCE_URL}
+    username: {DATASOURCE_USERNAME}
+    password: {DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  jackson:
+    default-property-inclusion: non_null
+  activemq:
+    broker_url: {ACTIVEMQ_BROKER_URL}
+    user: {ACTIVEMQ_USER}
+    password: {ACTIVEMQ_PASSWORD}

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "order.fullname" . }}
+  labels:
+  {{- include "order.labels" . | nindent 4 }}
+data:
+  application.yaml: |
+    {{- toYaml .Values.order | nindent 4}}

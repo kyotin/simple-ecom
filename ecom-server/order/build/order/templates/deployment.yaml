@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "product.fullname" . }}
+  name: {{ include "order.fullname" . }}
   labels:
-    {{- include "product.labels" . | nindent 4 }}
+    {{- include "order.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "product.selectorLabels" . | nindent 6 }}
+      {{- include "order.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,19 +18,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "product.selectorLabels" . | nindent 8 }}
+        {{- include "order.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "product.serviceAccountName" . }}
+      serviceAccountName: {{ include "order.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: application-config
           configMap:
-            name: {{ include "product.fullname" . }}
+            name: {{ include "order.fullname" . }}
             items:
               - key: application.yaml
                 path: application.yaml
@@ -42,11 +42,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 9991
+              containerPort: 9992
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 9991
+              port: 9992
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 5

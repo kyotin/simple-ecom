@@ -1,11 +1,11 @@
-# Default values for product.
+# Default values for order.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: tinnt/nab-test-product
+  repository: tinnt/nab-test-order
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -38,7 +38,7 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  port: 9991
+  port: 9992
 
 ingress:
   enabled: false
@@ -78,16 +78,16 @@ tolerations: []
 
 affinity: {}
 
-# You have to set your env
-product:
+order:
   server:
-    port: 9991
+    port: 9992
     shutdown: GRACEFUL
+
   spring:
     jpa:
       hibernate:
         ddl-auto: validate
-      show-sql: true # debug purpose
+      show-sql: false # debug purpose
     datasource:
       url: ""
       username: ""
@@ -97,11 +97,7 @@ product:
         minimum-idle: 2
     jackson:
       default-property-inclusion: non_null
-
-    cache:
-      type: redis
-    redis:
-      host: ""
-      port: 6379
+    activemq:
+      broker_url: ""
+      user: ""
       password: ""
-      database: 1

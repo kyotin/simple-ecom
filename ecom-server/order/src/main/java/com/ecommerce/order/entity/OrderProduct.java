@@ -2,8 +2,10 @@ package com.ecommerce.order.entity;
 
 
 import com.ecommerce.order.constants.EntityConstant;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import java.io.Serializable;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = EntityConstant.ORDER_PRODUCT)
 public class OrderProduct implements Serializable {
