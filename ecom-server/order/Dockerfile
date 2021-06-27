@@ -4,6 +4,6 @@ ARG JAR_FILE=target/*.jar
 
 COPY ${JAR_FILE} app.jar
 
-EXPOSE 9991
+EXPOSE 9992
 
 ENTRYPOINT ["java","-jar","/app.jar"]

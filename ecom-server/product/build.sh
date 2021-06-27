@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # compile
-./mvnw package
+mvn install -DskipTests
 
 # build docker
 docker build --build-arg JAR_FILE=target/product-0.0.1-SNAPSHOT.jar --tag tinnt/nab-test-product:latest .
