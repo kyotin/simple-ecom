@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.concurrent.CompletableFuture;
-
 @Controller
 @RequestMapping(APIMappingConstant.CATEGORY)
 public class CategoryController {
@@ -29,16 +27,18 @@ public class CategoryController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<ResponseDTO<Iterable<CategoryQueryDTO>>>> getAll() {
+    public ResponseEntity<ResponseDTO<Iterable<CategoryQueryDTO>>> getAll() {
         return categoryService.getAllCategories()
                 .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
-                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())))
+                .join();
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<ResponseDTO<CategoryQueryDTO>>> getCategory(@PathVariable Integer id) {
+    public ResponseEntity<ResponseDTO<CategoryQueryDTO>> getCategory(@PathVariable Integer id) {
         return categoryService.getCategory(id)
                 .thenApply(v -> ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.getReasonPhrase(), "Success", v)))
-                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())));
+                .exceptionally(throwable -> ResponseEntity.internalServerError().body(new ResponseDTO<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), throwable.getMessage())))
+                .join();
     }
 }

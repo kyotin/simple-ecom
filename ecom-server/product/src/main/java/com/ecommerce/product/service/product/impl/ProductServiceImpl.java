@@ -6,7 +6,6 @@ import com.ecommerce.product.exception.CustomException;
 import com.ecommerce.product.mapper.ProductMapper;
 import com.ecommerce.product.repository.ProductRepository;
 import com.ecommerce.product.service.product.ProductService;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     public void delete(Integer id) {
-        if (ObjectUtils.isEmpty(id)) {
+        if (id == null) {
             throw new CustomException(INVALID_REQUEST_EXCEPTION, HttpStatus.BAD_REQUEST);
         }
 
@@ -90,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Async
     public CompletableFuture<ProductQueryDTO> getOne(Integer id) {
-        if (ObjectUtils.isEmpty(id)) {
+        if (id == null) {
             throw new CustomException(INVALID_REQUEST_EXCEPTION, HttpStatus.BAD_REQUEST);
         }
 
