@@ -36,26 +36,32 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CompletableFuture<Iterable<CategoryQueryDTO>> getAllCategories() {
         LOGGER.info("CategoryService.getAllCategories");
-        List<CategoryQueryDTO> ret = new ArrayList<>();
+        return CompletableFuture.completedFuture("getAllCategories")
+                .thenApplyAsync(v -> {
+                    List<CategoryQueryDTO> ret = new ArrayList<>();
 
-        categoryRepository.findAll().forEach(c -> {
-            CategoryQueryDTO dto = CategoryQueryDTO
-                    .builder()
-                    .id(c.getId())
-                    .name(c.getName())
-                    .build();
-            ret.add(dto);
-        });
-
-        return CompletableFuture.completedFuture(ret);
+                    categoryRepository.findAll().forEach(c -> {
+                        CategoryQueryDTO dto = CategoryQueryDTO
+                                .builder()
+                                .id(c.getId())
+                                .name(c.getName())
+                                .build();
+                        ret.add(dto);
+                    });
+                    return ret;
+                });
     }
 
     @Async
     @Transactional
     public CompletableFuture<CategoryQueryDTO> getCategory(Integer id) {
-        Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(() -> new CustomException(ErrorConstant.CATEGORY_NOT_FOUND_EXCEPTION, HttpStatus.NOT_FOUND));
-        return CompletableFuture.completedFuture(mapper.buildCategoryQuery(category));
+        LOGGER.info("CategoryService.getCategory {}", id);
+        return CompletableFuture.completedFuture(id)
+                .thenApplyAsync(k -> {
+                    Category category = categoryRepository
+                            .findById(id)
+                            .orElseThrow(() -> new CustomException(ErrorConstant.CATEGORY_NOT_FOUND_EXCEPTION, HttpStatus.NOT_FOUND));
+                    return mapper.buildCategoryQuery(category);
+                });
     }
 }

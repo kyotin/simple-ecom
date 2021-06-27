@@ -2,7 +2,6 @@ package com.ecommerce.product.service;
 
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;
-import com.ecommerce.product.service.BaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

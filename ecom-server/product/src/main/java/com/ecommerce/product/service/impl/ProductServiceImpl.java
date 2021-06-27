@@ -2,6 +2,7 @@ package com.ecommerce.product.service.impl;
 
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;
+import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.exception.CustomException;
 import com.ecommerce.product.mapper.ProductMapper;
 import com.ecommerce.product.repository.ProductRepository;
@@ -45,8 +46,11 @@ public class ProductServiceImpl implements ProductService {
             throw new CustomException(PRODUCT_FORM_DATA_IS_REQUIRED, HttpStatus.BAD_REQUEST);
         }
 
-        final ProductFormDTO retFormDTO = mapper.buildProductForm(productRepository.save(mapper.buildProduct(formDTO)));
-        return CompletableFuture.completedFuture(retFormDTO);
+        return CompletableFuture.completedFuture(mapper.buildProduct(formDTO))
+                .thenApplyAsync(product -> {
+                    final Product persistedProd = productRepository.save(product);
+                    return mapper.buildProductForm(persistedProd);
+                });
     }
 
     @Async
@@ -69,8 +73,11 @@ public class ProductServiceImpl implements ProductService {
             throw new CustomException(INVALID_REQUEST_EXCEPTION, HttpStatus.NOT_FOUND);
         }
 
-        final ProductFormDTO retFormDTO = mapper.buildProductForm(productRepository.save(mapper.buildProduct(formDTO)));
-        return CompletableFuture.completedFuture(retFormDTO);
+        return CompletableFuture.completedFuture(mapper.buildProduct(formDTO))
+                .thenApplyAsync(product -> {
+                    final Product persistedProd = productRepository.save(product);
+                    return mapper.buildProductForm(persistedProd);
+                });
     }
 
     @Transactional
@@ -78,30 +85,34 @@ public class ProductServiceImpl implements ProductService {
         if (id == null) {
             throw new CustomException(INVALID_REQUEST_EXCEPTION, HttpStatus.BAD_REQUEST);
         }
-
         productRepository.deleteById(id);
     }
 
     @Async
     public CompletableFuture<Page<ProductQueryDTO>> getAll(PageRequest pr) {
-        return CompletableFuture.completedFuture(productRepository.findAll(pr).map(mapper::buildProductQuery));
+        LOGGER.info("getting all product...");
+        return CompletableFuture.completedFuture("getAll")
+                .thenApplyAsync(v -> productRepository.findAll(pr).map(mapper::buildProductQuery));
     }
 
     @Async
     public CompletableFuture<ProductQueryDTO> getOne(Integer id) {
+        LOGGER.info("getting a product... {}", id);
         if (id == null) {
             throw new CustomException(INVALID_REQUEST_EXCEPTION, HttpStatus.BAD_REQUEST);
         }
 
-        final ProductQueryDTO productQueryDTO = mapper.buildProductQuery(
-                productRepository.findById(id).orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND_EXCEPTION, HttpStatus.NOT_FOUND))
-        );
-
-        return CompletableFuture.completedFuture(productQueryDTO);
+        return CompletableFuture.completedFuture(id)
+                .thenApplyAsync(k -> {
+                    final Product product = productRepository.findById(k).orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND_EXCEPTION, HttpStatus.NOT_FOUND));
+                    return mapper.buildProductQuery(product);
+                });
     }
 
     @Async
     public CompletableFuture<Page<ProductQueryDTO>> getProductOfCategory(Pageable pageable, Integer categoryId) {
-        return CompletableFuture.completedFuture(productRepository.findAllByCategoryId(pageable, categoryId).map(mapper::buildProductQuery));
+        LOGGER.info("getting all products of category... {}", categoryId);
+        return CompletableFuture.completedFuture("getProductOfCagetory")
+                .thenApplyAsync(v -> productRepository.findAllByCategoryId(pageable, categoryId).map(mapper::buildProductQuery));
     }
 }
