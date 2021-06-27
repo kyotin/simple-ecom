@@ -5,6 +5,7 @@ import com.ecommerce.order.entity.PlaceOrder;
 import com.ecommerce.order.exception.CustomException;
 import com.ecommerce.order.mapper.OrderServiceMapper;
 import com.ecommerce.order.repository.OrderRepository;
+import com.ecommerce.order.service.NotificationService;
 import com.ecommerce.order.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,16 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
 
+    private NotificationService notificationService;
+
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    @Autowired
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     private final OrderServiceMapper mapper = OrderServiceMapper.INSTANCE;
@@ -39,8 +47,20 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("running to here");
         placeOrderDTO.calculatePrice();
 
-        PlaceOrder placeOrder = orderRepository.save(mapper.buildPlaceOrder(placeOrderDTO));
-
-        return CompletableFuture.completedFuture(mapper.buildPlaceOrderDTO(placeOrder));
+        return CompletableFuture
+                .completedFuture(mapper.buildPlaceOrder(placeOrderDTO))
+                .thenApplyAsync(placeOrder -> {
+                    final PlaceOrder order = orderRepository.save(placeOrder);
+                    final PlaceOrderDTO dto = mapper.buildPlaceOrderDTO(order);
+                    notificationService.notifyOrderChangeStatus(dto);
+                    return dto;
+                });
     }
+
+    @Override
+    public CompletableFuture<PlaceOrderDTO> approveOrder(PlaceOrderDTO placeOrderDTO) {
+        throw new UnsupportedOperationException("will do if i have time :)");
+    }
+
+
 }

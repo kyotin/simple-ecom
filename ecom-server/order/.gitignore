@@ -32,3 +32,4 @@ gen
 hs_err_pid*
 
 /target/
+/src/main/resources/application.yml.mine

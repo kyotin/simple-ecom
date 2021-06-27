@@ -1,13 +1,11 @@
 package com.ecommerce.order.service;
 
-import com.ecommerce.order.entity.OrderStatus;
+import com.ecommerce.order.dto.PlaceOrderDTO;
 
 public interface NotificationService {
     /**
      * This method will send message to queue for another service
      * send sms/email to notify customer/seller
-     * @param from
-     * @param to
      */
-    void notify(OrderStatus from, OrderStatus to);
+    void notifyOrderChangeStatus(PlaceOrderDTO msg);
 }

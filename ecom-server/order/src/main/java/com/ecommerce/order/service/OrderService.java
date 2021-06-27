@@ -11,4 +11,11 @@ public interface OrderService {
      * @return
      */
     CompletableFuture<PlaceOrderDTO> placeOrder(PlaceOrderDTO placeOrderDTO);
+
+    /**
+     * Approve an order, after company receive order from
+     * @param placeOrderDTO
+     * @return
+     */
+    CompletableFuture<PlaceOrderDTO> approveOrder(PlaceOrderDTO placeOrderDTO);
 }
