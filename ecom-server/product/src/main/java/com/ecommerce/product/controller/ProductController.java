@@ -4,7 +4,7 @@ import com.ecommerce.product.constants.APIMappingConstant;
 import com.ecommerce.product.dto.ResponseDTO;
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;
-import com.ecommerce.product.service.product.ProductService;
+import com.ecommerce.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

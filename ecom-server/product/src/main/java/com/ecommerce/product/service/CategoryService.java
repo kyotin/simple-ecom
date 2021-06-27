@@ -1,4 +1,4 @@
-package com.ecommerce.product.service.category;
+package com.ecommerce.product.service;
 
 import com.ecommerce.product.dto.query.CategoryQueryDTO;
 

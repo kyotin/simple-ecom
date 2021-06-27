@@ -1,2 +1,26 @@
 server:
-  port: 9990
+  port: 9992
+  shutdown: GRACEFUL
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true # debug purpose
+  datasource:
+    url: jdbc:mysql://staging-rzidentity.cx1lnhz9gmnb.us-east-2.rds.amazonaws.com:3306/dev_nab_order
+    username: admin
+    password: 9POUk34d1JqC36Aq
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  jackson:
+    default-property-inclusion: non_null
+
+  cache:
+    type: redis
+  redis:
+    host: dev-redis.datagma.info
+    port: 6379
+    password: W07kqUO1P#tZD7z5
+    database: 1

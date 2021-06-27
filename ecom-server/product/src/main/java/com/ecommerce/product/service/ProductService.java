@@ -1,4 +1,4 @@
-package com.ecommerce.product.service.product;
+package com.ecommerce.product.service;
 
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;

@@ -3,9 +3,7 @@ package com.ecommerce.product.entity;
 import com.ecommerce.product.constants.EntityConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;

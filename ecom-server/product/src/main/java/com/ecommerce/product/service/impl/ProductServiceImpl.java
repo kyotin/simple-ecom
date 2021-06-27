@@ -1,11 +1,11 @@
-package com.ecommerce.product.service.product.impl;
+package com.ecommerce.product.service.impl;
 
 import com.ecommerce.product.dto.form.ProductFormDTO;
 import com.ecommerce.product.dto.query.ProductQueryDTO;
 import com.ecommerce.product.exception.CustomException;
 import com.ecommerce.product.mapper.ProductMapper;
 import com.ecommerce.product.repository.ProductRepository;
-import com.ecommerce.product.service.product.ProductService;
+import com.ecommerce.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

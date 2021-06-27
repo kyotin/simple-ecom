@@ -1,12 +1,8 @@
 package com.ecommerce.product.entity;
 
 import com.ecommerce.product.constants.EntityConstant;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,13 +12,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
-@EqualsAndHashCode
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Embeddable
+@Entity
 @Table(name = EntityConstant.PRODUCT_IMG)
-public class ProductImg {
+public class ProductImg implements Serializable{
 
     @EmbeddedId
     private ProductImgId id;

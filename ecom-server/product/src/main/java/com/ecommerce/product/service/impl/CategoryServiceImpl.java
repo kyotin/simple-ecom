@@ -1,4 +1,4 @@
-package com.ecommerce.product.service.category.impl;
+package com.ecommerce.product.service.impl;
 
 import com.ecommerce.product.constants.ErrorConstant;
 import com.ecommerce.product.dto.query.CategoryQueryDTO;
@@ -6,7 +6,7 @@ import com.ecommerce.product.entity.Category;
 import com.ecommerce.product.exception.CustomException;
 import com.ecommerce.product.mapper.ProductMapper;
 import com.ecommerce.product.repository.CategoryRespository;
-import com.ecommerce.product.service.category.CategoryService;
+import com.ecommerce.product.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,9 +18,9 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity
 @SuperBuilder
 @NoArgsConstructor
+@Entity
 @Table(name = EntityConstant.CATEGORY)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Category extends BaseEntity {
