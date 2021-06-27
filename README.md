@@ -126,3 +126,11 @@ Response:
   "timestamp": 1624819097024
 }
 ```
+
+## Infrastructure
+In each service, I had placed Dockerfile as well as `build.sh`, to build source code, dockerize and push the image to
+my dockerhub.
+![alt text](https://github.com/kyotin/simple-ecom/blob/master/dockerhub.png?raw=true)
+
+Services are ready for deploying to k8s by utilize `helm` tool.
+![alt text](https://github.com/kyotin/simple-ecom/blob/master/k8s_minikube.png?raw=true)
